@@ -9,7 +9,7 @@ const SEPARATOR_CODE = 58;
 const CRAFT_NUM_COMPONENTS_LIMIT = 3;
 
 let items = collections.vector<Item>("iv");
-let itemsMap = collections.vector<string, i32>("im");
+let itemsMap = collections.map<string, i32>("im");
 
 function userItemsVec(accountId: string): collections.Vector<i32> {
   return collections.vector<i32>("uiv:" + accountId);
@@ -49,7 +49,7 @@ export function getItem(itemId: i32): Item {
 
 export function getItems(itemIds: i32[]): Item[] {
   assert(itemIds.length <= RETURN_LIMIT);
-  return itemIds.map(getItem);
+  return itemIds.map<Item>((itemId) => getItem(itemId));
 }
 
 function assertSortedAndHave(sortedIds: i32[]): void {
@@ -59,9 +59,9 @@ function assertSortedAndHave(sortedIds: i32[]): void {
     assert(sortedIds[i] >= sortedIds[i - 1], "The list of items is unsorted");
   }
   let m = userItemsMap(context.sender);
-  sortedIds.forEach((itemId) => {
-    assert(m.get(itemId, -1) >= 0, "User doesn't have the item");
-  });
+  for (let i = 0; i < n; ++i) {
+    assert(m.get(sortedIds[i], -1) >= 0, "User doesn't have the item");
+  }
 }
 
 function hashSortedIds(sortedIds: i32[]): string {
@@ -76,9 +76,9 @@ function getItemByHash(hash: string): Item {
 function maybeAddItem(item: Item): void {
   let m = userItemsMap(context.sender);
   // Checking if the user doesn't have the item yet.
-  if (m.get(item.itemId, -1) < 0) {
+  if (m.get(item.id, -1) < 0) {
     let itemIds = userItemsVec(context.sender);
-    m.set(item.itemId, itemIds.push(item.itemId));
+    m.set(item.id, itemIds.push(item.id));
   }
 }
 
@@ -96,8 +96,8 @@ export function craft(sortedIds: i32[]): Item {
 export function invent(sortedIds: i32[], item: Item): Item {
   assertSortedAndHave(sortedIds);
   let hash = hashSortedIds(sortedIds);
-  assert(getItemByHash(item) == null, "Given recipe already exists");
-  item.itemId = items.length;
+  assert(getItemByHash(hash) == null, "Given recipe already exists");
+  item.id = items.length;
   item.author = context.sender;
   itemsMap.set(hash, items.push(item));
   maybeAddItem(item);
