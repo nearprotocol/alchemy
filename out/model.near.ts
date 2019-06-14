@@ -1,7 +1,7 @@
 
-      import { storage, near, base64 } from "./near";
-      import { JSONEncoder } from "./json/encoder";
-      import { JSONDecoder, ThrowingJSONHandler, DecoderState } from "./json/decoder";
+      import { storage, near } from "./near";
+      import { JSONEncoder } from "./json/encoder"
+      import { JSONDecoder, ThrowingJSONHandler, DecoderState } from "./json/decoder"
       import {Item as wrapped_Item} from "./model";
 
       // Runtime functions
