@@ -27,10 +27,10 @@ if (value.description != null) {
           } else {
             encoder.setNull("description");
           }
-if (value.imageUrl != null) {
-            encoder.setString("imageUrl", value.imageUrl);
+if (value.emoji != null) {
+            encoder.setString("emoji", value.emoji);
           } else {
-            encoder.setNull("imageUrl");
+            encoder.setNull("emoji");
           }
 }
 export class __near_JSONHandler_Item extends ThrowingJSONHandler {
@@ -65,8 +65,8 @@ if (name == "description") {
             this.value.description = <String>value;
             return;
           }
-if (name == "imageUrl") {
-            this.value.imageUrl = <String>value;
+if (name == "emoji") {
+            this.value.emoji = <String>value;
             return;
           }
 
@@ -89,8 +89,8 @@ if (name == "description") {
         this.value.description = <String>null;
         return;
       }
-if (name == "imageUrl") {
-        this.value.imageUrl = <String>null;
+if (name == "emoji") {
+        this.value.emoji = <String>null;
         return;
       }
 

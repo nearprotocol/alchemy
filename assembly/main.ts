@@ -7,6 +7,7 @@ import { Item } from "./model.near";
 const RETURN_LIMIT = 20;
 const SEPARATOR_CODE = 58;
 const CRAFT_NUM_COMPONENTS_LIMIT = 3;
+const NUM_DEFAULT_ITEMS = 4;
 
 let items = collections.vector<Item>("iv");
 let itemsMap = collections.map<string, i32>("im");
@@ -18,7 +19,6 @@ function userItemsVec(accountId: string): collections.Vector<i32> {
 function userItemsMap(accountId: string): collections.Map<i32, i32> {
   return collections.map<i32, i32>("uim:" + accountId);
 }
-
 
 function assertAccountId(accountId: string): void {
   let n = accountId.length;
@@ -102,4 +102,46 @@ export function invent(sortedIds: i32[], item: Item): Item {
   itemsMap.set(hash, items.push(item));
   maybeAddItem(item);
   return item;
+}
+
+export function initUser(): void {
+  assertAccountId(context.sender);
+  assert(items.length > 0, "The contract is not yet initialized");
+  for (let i = 0; i < NUM_DEFAULT_ITEMS; ++i) {
+    maybeAddItem(items[i]);
+  }
+}
+
+export function init(): void {
+  assert(items.length == 0, "Already initialized");
+  let n = 0;
+  items.push({
+    id: n++,
+    author: context.contractName,
+    name: "Fire",
+    description: "Fire is a basic element",
+    emoji: "🔥",
+  });
+  items.push({
+    id: n++,
+    author: context.contractName,
+    name: "Water",
+    description: "Water is a basic element",
+    emoji: "💧",
+  });
+  items.push({
+    id: n++,
+    author: context.contractName,
+    name: "Earth",
+    description: "Earth is a basic element",
+    emoji: "🌱",
+  });
+  items.push({
+    id: n++,
+    author: context.contractName,
+    name: "Air",
+    description: "Air is a basic element",
+    emoji: "💨",
+  });
+  assert(items.length == NUM_DEFAULT_ITEMS, "Bug in the initialization");
 }

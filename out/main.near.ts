@@ -2,7 +2,7 @@
       import { storage, near } from "./near";
       import { JSONEncoder } from "./json/encoder"
       import { JSONDecoder, ThrowingJSONHandler, DecoderState } from "./json/decoder"
-      import {listUserItems as wrapped_listUserItems, getItem as wrapped_getItem, getItems as wrapped_getItems, craft as wrapped_craft, invent as wrapped_invent} from "./main";
+      import {listUserItems as wrapped_listUserItems, getItem as wrapped_getItem, getItems as wrapped_getItems, craft as wrapped_craft, invent as wrapped_invent, initUser as wrapped_initUser, init as wrapped_init} from "./main";
 
       // Runtime functions
       @external("env", "return_value")
@@ -402,4 +402,80 @@ if (result != null) {
         let val = encoder.serialize();
         return_value(val.byteLength, val.buffer.data);
       
+}
+export class __near_ArgsParser_initUser extends ThrowingJSONHandler {
+        buffer: Uint8Array;
+        decoder: JSONDecoder<__near_ArgsParser_initUser>;
+        handledRoot: boolean = false;
+      
+setNull(name: string): void {
+
+      super.setNull(name);
+    }
+
+      pushObject(name: string): bool {
+if (!this.handledRoot) {
+      assert(name == null);
+      this.handledRoot = true;
+      return true;
+    } else {
+      assert(name != null);
+    }
+
+        return super.pushObject(name);
+      }
+
+      pushArray(name: string): bool {
+
+        return super.pushArray(name);
+      }
+}
+export function initUser(): void {
+      // Reading input bytes.
+      let json = storage._internalReadBytes(4, 0, 0);
+      let handler = new __near_ArgsParser_initUser();
+      handler.buffer = json;
+      handler.decoder = new JSONDecoder<__near_ArgsParser_initUser>(handler);
+      handler.decoder.deserialize(json);
+wrapped_initUser(
+
+);
+}
+export class __near_ArgsParser_init extends ThrowingJSONHandler {
+        buffer: Uint8Array;
+        decoder: JSONDecoder<__near_ArgsParser_init>;
+        handledRoot: boolean = false;
+      
+setNull(name: string): void {
+
+      super.setNull(name);
+    }
+
+      pushObject(name: string): bool {
+if (!this.handledRoot) {
+      assert(name == null);
+      this.handledRoot = true;
+      return true;
+    } else {
+      assert(name != null);
+    }
+
+        return super.pushObject(name);
+      }
+
+      pushArray(name: string): bool {
+
+        return super.pushArray(name);
+      }
+}
+export function init(): void {
+      // Reading input bytes.
+      let json = storage._internalReadBytes(4, 0, 0);
+      let handler = new __near_ArgsParser_init();
+      handler.buffer = json;
+      handler.decoder = new JSONDecoder<__near_ArgsParser_init>(handler);
+      handler.decoder.deserialize(json);
+wrapped_init(
+
+);
 }

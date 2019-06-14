@@ -3,5 +3,5 @@ export class Item {
   author: string; // accountId
   name: string;
   description: string;
-  imageUrl: string;
+  emoji: string;
 }
